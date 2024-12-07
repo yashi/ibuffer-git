@@ -71,15 +71,15 @@ FILENAME must be a filename."
 
 Argument RES is a cons cell in the format `(ADD . DEL)'."
   (if (not res) ""
-    (destructuring-bind (add . del) res
+    (cl-destructuring-bind (add . del) res
       (cond ((and (= 0 add) (= 0 del)) "")
             (t (let* ((add-ratio (/ (float add) (+ add del)))
                       (plus  (ceiling (* add-ratio ibuffer-git-column-length)))
                       (minus (- ibuffer-git-column-length plus)))
                  (concat
-                  (propertize (concat (loop for i from 1 to (min add plus) collect ?+))
+                  (propertize (concat (cl-loop for i from 1 to (min add plus) collect ?+))
                               'face 'ibuffer-git-add-face)
-                  (propertize (concat (loop for i from 1 to (min del minus) collect ?-))
+                  (propertize (concat (cl-loop for i from 1 to (min del minus) collect ?-))
                               'face 'ibuffer-git-del-face))))))))
 
 (defvar ibuffer-git-status-keymap (make-sparse-keymap)
@@ -108,7 +108,7 @@ Argument EVENT is the mouse event that triggered us."
 
 
 (define-ibuffer-column git-status-mini (:name "G" :inline t)
-  (destructuring-bind (a . d)
+  (cl-destructuring-bind (a . d)
       (or (ignore-errors (when (buffer-file-name)
                            (ibuffer-git-check-status (buffer-file-name))))
           (cons 0 0))
